@@ -5,6 +5,8 @@ import (
 	"github.com/ONSdigital/dp-dd-search-indexer/handler"
 	"github.com/ONSdigital/dp-dd-search-indexer/search"
 	"github.com/ONSdigital/go-ns/handlers/healthcheck"
+	"github.com/ONSdigital/go-ns/handlers/requestID"
+	"github.com/ONSdigital/go-ns/handlers/timeout"
 	"github.com/ONSdigital/go-ns/log"
 	"github.com/bsm/sarama-cluster"
 	"github.com/gorilla/pat"
@@ -13,6 +15,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"time"
 )
 
 func main() {
@@ -46,13 +49,22 @@ func listenForHTTPRequests(exitCh chan struct{}) {
 
 	go func() {
 		router := pat.New()
-		alice := alice.New().Then(router)
 		router.Get("/healthcheck", healthcheck.Handler)
 		router.Post("/index", handler.Index)
-		log.Debug("Starting server", log.Data{"bind_addr": config.BindAddr})
+		log.Debug("Starting HTTP server", log.Data{"bind_addr": config.BindAddr})
+
+		middleware := []alice.Constructor{
+			requestID.Handler(16),
+			log.Handler,
+			timeout.Handler(10 * time.Second),
+		}
+		alice := alice.New(middleware...).Then(router)
+
 		server := &http.Server{
-			Addr:    config.BindAddr,
-			Handler: alice,
+			Addr:         config.BindAddr,
+			Handler:      alice,
+			ReadTimeout:  5 * time.Second,
+			WriteTimeout: 10 * time.Second,
 		}
 		if err := server.ListenAndServe(); err != nil {
 			log.Error(err, nil)
@@ -87,7 +99,6 @@ func shutdown(kafkaConsumer io.Closer, searchClient search.IndexingClient) {
 	searchClient.Stop()
 	log.Debug("Service stopped", nil)
 }
-
 
 func listenForKafkaMessages(kafkaConsumer *cluster.Consumer, searchClient search.IndexingClient, exitCh chan struct{}) {
 
