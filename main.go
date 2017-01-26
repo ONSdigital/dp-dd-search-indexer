@@ -23,7 +23,7 @@ func main() {
 	searchClient, err := search.NewClient(config.ElasticSearchNodes, config.ElasticSearchIndex)
 	if err != nil {
 		log.Error(err, log.Data{"message": "Failed to create Elastic Search client."})
-		return
+		os.Exit(1)
 	}
 	handler.SearchClient = searchClient
 
@@ -32,15 +32,17 @@ func main() {
 	kafkaConsumer, err := cluster.NewConsumer(config.KafkaBrokers, config.KafkaConsumerTopic, []string{config.KafkaConsumerTopic}, consumerConfig)
 	if err != nil {
 		log.Error(err, log.Data{"message": "An error occured creating the Kafka consumer"})
-		return
+		os.Exit(1)
 	}
 
-	listenForKafkaMessages(kafkaConsumer, searchClient)
-	listenForHTTPRequests()
-	waitForInterrupt(kafkaConsumer, searchClient)
+	exitCh := make(chan struct{})
+
+	listenForKafkaMessages(kafkaConsumer, searchClient, exitCh)
+	listenForHTTPRequests(exitCh)
+	waitForInterrupt(kafkaConsumer, searchClient, exitCh)
 }
 
-func listenForHTTPRequests() {
+func listenForHTTPRequests(exitCh chan struct{}) {
 
 	go func() {
 		router := pat.New()
@@ -55,30 +57,47 @@ func listenForHTTPRequests() {
 		if err := server.ListenAndServe(); err != nil {
 			log.Error(err, nil)
 		}
+
+		log.Debug("HTTP server has stopped.", nil)
+		exitCh <- struct{}{}
 	}()
 }
 
-func waitForInterrupt(kafkaConsumer io.Closer, searchClient search.IndexingClient) {
+func waitForInterrupt(kafkaConsumer io.Closer, searchClient search.IndexingClient, exitCh chan struct{}) {
 
 	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, os.Interrupt)
-	<-signals
-	log.Debug("Shutting down...", nil)
+	signal.Notify(signals, os.Interrupt, os.Kill)
+
+	select {
+	case <-signals:
+		log.Debug("OS signal receieved.", nil)
+		shutdown(kafkaConsumer, searchClient)
+	case <-exitCh:
+		log.Debug("Notification received on exit channel.", nil)
+		shutdown(kafkaConsumer, searchClient)
+	}
+}
+
+func shutdown(kafkaConsumer io.Closer, searchClient search.IndexingClient) {
+	log.Debug("Shutting down.", nil)
 	err := kafkaConsumer.Close()
 	if err != nil {
 		log.Error(err, log.Data{"message": "An error occured closing the Kafka consumer"})
 	}
 	searchClient.Stop()
 	log.Debug("Service stopped", nil)
-
 }
 
-func listenForKafkaMessages(kafkaConsumer *cluster.Consumer, searchClient search.IndexingClient) {
+
+func listenForKafkaMessages(kafkaConsumer *cluster.Consumer, searchClient search.IndexingClient, exitCh chan struct{}) {
 
 	go func() {
 		for message := range kafkaConsumer.Messages() {
 			search.ProcessIndexRequest(message.Value, searchClient)
 		}
+
+		log.Debug("Kafka consumer has stopped.", nil)
+		exitCh <- struct{}{}
 	}()
 
 }
