@@ -5,8 +5,8 @@ import (
 	"gopkg.in/olivere/elastic.v3"
 )
 
-// Checks the ElasticSearchClient satisfies the IndexingClient interface
-var _ IndexingClient = (*ElasticSearchClient)(nil)
+// Checks the elasticSearchClient satisfies the IndexingClient interface
+var _ IndexingClient = (*elasticSearchClient)(nil)
 
 // Client - a package instance of IndexingClient
 var Client IndexingClient
@@ -17,14 +17,14 @@ type IndexingClient interface {
 	Stop()
 }
 
-// ElasticSearchClient - Elastic Search specific implementation of IndexingClient
-type ElasticSearchClient struct {
+// elasticSearchClient - Elastic Search specific implementation of IndexingClient
+type elasticSearchClient struct {
 	client *elastic.Client
 	index  string
 }
 
 // Index the given document.
-func (elasticSearch *ElasticSearchClient) Index(document *model.Document) error {
+func (elasticSearch *elasticSearchClient) Index(document *model.Document) error {
 	_, err := elasticSearch.client.Index().
 		Index(elasticSearch.index).
 		Type(document.Type).
@@ -37,11 +37,11 @@ func (elasticSearch *ElasticSearchClient) Index(document *model.Document) error 
 }
 
 // Stop the elastic search client.
-func (elasticSearch *ElasticSearchClient) Stop() {
+func (elasticSearch *elasticSearchClient) Stop() {
 	elasticSearch.client.Stop()
 }
 
-// NewClient create a new instance of ElasticSearchClient.
+// NewClient create a new instance of elasticSearchClient.
 func NewClient(nodes []string, index string) (IndexingClient, error) {
 	client, err := elastic.NewClient(
 		elastic.SetURL(nodes...),
@@ -50,5 +50,5 @@ func NewClient(nodes []string, index string) (IndexingClient, error) {
 		return nil, err
 	}
 
-	return &ElasticSearchClient{client, index}, nil
+	return &elasticSearchClient{client, index}, nil
 }
