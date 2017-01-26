@@ -31,6 +31,23 @@ func Test(t *testing.T) {
 		})
 	})
 
+	Convey("Given a valid JSON input, but invalid search request ", t, func() {
+
+		recorder := httptest.NewRecorder()
+		requestBodyReader := bytes.NewReader([]byte("[]"))
+		request, _ := http.NewRequest("POST", "/", requestBodyReader)
+
+		Convey("When the index handler is called", func() {
+
+			search.Client = searchtest.NewMockSearchClient()
+			handler.Index(recorder, request)
+
+			Convey("Then the response code is a 400 - bad request", func() {
+				So(recorder.Code, ShouldEqual, http.StatusBadRequest)
+			})
+		})
+	})
+
 	Convey("Given a valid search request ", t, func() {
 
 		recorder := httptest.NewRecorder()
