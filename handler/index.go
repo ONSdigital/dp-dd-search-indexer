@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// SearchClient - the dependency used to interact with elastic search.
 var SearchClient search.IndexingClient
 
 // Index - HTTP handler for accepting search index requests.
@@ -17,8 +18,12 @@ func Index(w http.ResponseWriter, req *http.Request) {
 
 	decoder := json.NewDecoder(req.Body)
 	defer func() {
-		io.Copy(ioutil.Discard, req.Body)
-		err := req.Body.Close()
+		_, err := io.Copy(ioutil.Discard, req.Body)
+		if err != nil {
+			log.Error(err, log.Data{"message": "Error reading the request body."})
+		}
+
+		err = req.Body.Close()
 		if err != nil {
 			log.Error(err, log.Data{"message": "Error closing request body."})
 		}
@@ -31,8 +36,6 @@ func Index(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	log.Debug("Received HTTP request to index data", log.Data{"Document": document})
 
 	err = SearchClient.Index(document)
 	if err != nil {
