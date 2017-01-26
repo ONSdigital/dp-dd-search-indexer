@@ -25,7 +25,7 @@ func main() {
 		log.Error(err, log.Data{"message": "Failed to create Elastic Search client."})
 		return
 	}
-	search.Client = searchClient
+	handler.SearchClient = searchClient
 
 	log.Debug("Creating Kafka consumer.", nil)
 	consumerConfig := cluster.NewConfig()
@@ -35,7 +35,7 @@ func main() {
 		return
 	}
 
-	listenForKafkaMessages(kafkaConsumer)
+	listenForKafkaMessages(kafkaConsumer, searchClient)
 	listenForHTTPRequests()
 	waitForInterrupt(kafkaConsumer, searchClient)
 }
@@ -73,11 +73,11 @@ func waitForInterrupt(kafkaConsumer io.Closer, searchClient search.IndexingClien
 
 }
 
-func listenForKafkaMessages(kafkaConsumer *cluster.Consumer) {
+func listenForKafkaMessages(kafkaConsumer *cluster.Consumer, searchClient search.IndexingClient) {
 
 	go func() {
 		for message := range kafkaConsumer.Messages() {
-			search.ProcessIndexRequest(message.Value)
+			search.ProcessIndexRequest(message.Value, searchClient)
 		}
 	}()
 

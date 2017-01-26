@@ -8,9 +8,6 @@ import (
 // Checks the elasticSearchClient satisfies the IndexingClient interface
 var _ IndexingClient = (*elasticSearchClient)(nil)
 
-// Client - a package instance of IndexingClient
-var Client IndexingClient
-
 // IndexingClient - interface for the indexing functions of a search client.
 type IndexingClient interface {
 	Index(document *model.Document) error

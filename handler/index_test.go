@@ -3,7 +3,6 @@ package handler_test
 import (
 	"bytes"
 	"github.com/ONSdigital/dp-dd-search-indexer/handler"
-	"github.com/ONSdigital/dp-dd-search-indexer/search"
 	"github.com/ONSdigital/dp-dd-search-indexer/search/searchtest"
 	. "github.com/smartystreets/goconvey/convey"
 	"net/http"
@@ -39,7 +38,7 @@ func Test(t *testing.T) {
 
 		Convey("When the index handler is called", func() {
 
-			search.Client = searchtest.NewMockSearchClient()
+			handler.SearchClient = searchtest.NewMockSearchClient()
 			handler.Index(recorder, request)
 
 			Convey("Then the response code is a 400 - bad request", func() {
@@ -56,7 +55,7 @@ func Test(t *testing.T) {
 
 		Convey("When the index handler is called and returns an error", func() {
 
-			search.Client = searchtest.NewErrorSearchClient()
+			handler.SearchClient = searchtest.NewErrorSearchClient()
 			handler.Index(recorder, request)
 
 			Convey("Then the response code is a 500 - internal server error", func() {
@@ -73,7 +72,7 @@ func Test(t *testing.T) {
 
 		Convey("When the index handler is called and returns an error", func() {
 
-			search.Client = searchtest.NewMockSearchClient()
+			handler.SearchClient = searchtest.NewMockSearchClient()
 			handler.Index(recorder, request)
 
 			Convey("Then the response code is a 200 - OK", func() {

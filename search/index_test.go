@@ -18,10 +18,9 @@ func Test(t *testing.T) {
 		}
 		documentJson, _ := json.Marshal(expectedRequest)
 		searchClient := searchtest.NewMockSearchClient()
-		search.Client = searchClient
 
 		Convey("When the index request is processed", func() {
-			search.ProcessIndexRequest(documentJson)
+			search.ProcessIndexRequest(documentJson, searchClient)
 
 			Convey("Then the search client is called with the expected parameters", func() {
 				var actualRequest searchtest.IndexRequest = searchClient.IndexRequests[0]

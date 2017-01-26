@@ -5,10 +5,12 @@ import (
 	"github.com/ONSdigital/dp-dd-search-indexer/model"
 	"github.com/ONSdigital/dp-dd-search-indexer/search"
 	"github.com/ONSdigital/go-ns/log"
-	"net/http"
-	"io/ioutil"
 	"io"
+	"io/ioutil"
+	"net/http"
 )
+
+var SearchClient search.IndexingClient
 
 // Index - HTTP handler for accepting search index requests.
 func Index(w http.ResponseWriter, req *http.Request) {
@@ -32,7 +34,7 @@ func Index(w http.ResponseWriter, req *http.Request) {
 
 	log.Debug("Received HTTP request to index data", log.Data{"Document": document})
 
-	err = search.Client.Index(document)
+	err = SearchClient.Index(document)
 	if err != nil {
 		log.Error(err, log.Data{"message": "Error indexing document."})
 		w.WriteHeader(http.StatusInternalServerError)
