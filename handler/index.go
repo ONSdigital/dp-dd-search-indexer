@@ -31,6 +31,7 @@ func Index(w http.ResponseWriter, req *http.Request) {
 
 	err = search.Client.Index(document)
 	if err != nil {
+		log.Error(err, log.Data{"message": "Error indexing document."})
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
