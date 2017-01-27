@@ -2,7 +2,9 @@ package handler_test
 
 import (
 	"bytes"
+	"errors"
 	"github.com/ONSdigital/dp-dd-search-indexer/handler"
+	"github.com/ONSdigital/dp-dd-search-indexer/model"
 	"github.com/ONSdigital/dp-dd-search-indexer/search/searchtest"
 	. "github.com/smartystreets/goconvey/convey"
 	"net/http"
@@ -55,7 +57,12 @@ func Test(t *testing.T) {
 
 		Convey("When the index handler is called and returns an error", func() {
 
-			handler.SearchClient = searchtest.NewErrorSearchClient()
+			mockSearchClient := searchtest.NewMockSearchClient()
+			mockSearchClient.CustomIndexFunc = func(document *model.Document) error {
+				return errors.New("went twang")
+			}
+			handler.SearchClient = mockSearchClient
+
 			handler.Index(recorder, request)
 
 			Convey("Then the response code is a 500 - internal server error", func() {
