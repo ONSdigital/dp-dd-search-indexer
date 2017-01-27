@@ -2,6 +2,7 @@ package handler_test
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"github.com/ONSdigital/dp-dd-search-indexer/handler"
 	"github.com/ONSdigital/dp-dd-search-indexer/model"
@@ -76,14 +77,20 @@ func Test(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		requestBodyReader := bytes.NewReader([]byte(validJSONDocument))
 		request, _ := http.NewRequest("POST", "/", requestBodyReader)
+		var expectedDocument model.Document
+		_ = json.Unmarshal([]byte(validJSONDocument), &expectedDocument)
 
 		Convey("When the index handler is called and returns an error", func() {
 
-			handler.SearchClient = searchtest.NewMockSearchClient()
+			mockSearchClient := searchtest.NewMockSearchClient()
+			handler.SearchClient = mockSearchClient
 			handler.Index(recorder, request)
 
 			Convey("Then the response code is a 200 - OK", func() {
 				So(recorder.Code, ShouldEqual, http.StatusOK)
+				actualDocument := mockSearchClient.IndexRequests[0].Document
+				So(actualDocument.ID, ShouldEqual, expectedDocument.ID)
+				So(actualDocument.Title, ShouldEqual, expectedDocument.Title)
 			})
 		})
 	})
