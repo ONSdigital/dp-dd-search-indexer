@@ -9,6 +9,18 @@
 			"revisionTime": "2016-12-06T09:52:07Z"
 		},
 		{
+			"checksumSHA1": "J9OiPnhPHFPhQ+R+dq6LFj+dTxE=",
+			"path": "github.com/ONSdigital/go-ns/handlers/requestID",
+			"revision": "d9a5822f861ce59ea57a59bf2926f98082f8891c",
+			"revisionTime": "2016-12-06T09:52:07Z"
+		},
+		{
+			"checksumSHA1": "HgL/HLG5D1WNPb1lrb/hpywtm9o=",
+			"path": "github.com/ONSdigital/go-ns/handlers/timeout",
+			"revision": "d9a5822f861ce59ea57a59bf2926f98082f8891c",
+			"revisionTime": "2016-12-06T09:52:07Z"
+		},
+		{
 			"checksumSHA1": "nVbb+x6nwEFqcpNDF+aw8WHy+k4=",
 			"path": "github.com/ONSdigital/go-ns/log",
 			"revision": "d9a5822f861ce59ea57a59bf2926f98082f8891c",
