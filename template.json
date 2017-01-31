@@ -15,103 +15,53 @@
               "analyzer": "snowball",
               "type": "string",
               "term_vector": "with_positions_offsets",
-              "store":true
-            }
-          ,
+              "store": true
+            },
             "match": "*",
             "match_mapping_type": "string"
           }
         }
       ]
     },
-    "ons*": {
-      "mappings": {
-        "dataset": {
+    "dataset": {
+      "properties": {
+        "body": {
           "properties": {
-            "body": {
+            "dimensions": {
               "properties": {
-                "description": {
+                "id": {
                   "type": "string",
                   "index": "not_analyzed"
                 },
-                "dimensions": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "index": "not_analyzed"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string",
-                      "index": "not_analyzed"
-                    }
-                  }
-                },
-                "id": {
-                  "type": "string"
-                },
-                "metadata": {
-                  "properties": {
-                    "associatedPublications": {
-                      "type": "string"
-                    },
-                    "contact": {
-                      "properties": {
-                        "email": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "phone": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "methodology": {
-                      "properties": {
-                        "title": {
-                          "type": "string"
-                        },
-                        "url": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "nationalStatistics": {
-                      "type": "boolean"
-                    },
-                    "nextReleaseDate": {
-                      "type": "string"
-                    },
-                    "releaseDate": {
-                      "type": "string"
-                    },
-                    "termsAndConditions": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "title": {
-                  "type": "string"
-                },
-                "url": {
-                  "type": "string"
+                "type": {
+                  "type": "string",
+                  "index": "not_analyzed"
                 }
               }
             },
             "id": {
-              "type": "string"
+              "type": "string",
+              "index": "not_analyzed"
             },
-            "type": {
-              "type": "string"
+            "metadata": {
+              "properties": {
+                "nextReleaseDate": {
+                  "type": "string"
+                },
+                "releaseDate": {
+                  "type": "string"
+                }
+              }
             }
           }
+        },
+        "id": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "type": {
+          "type": "string",
+          "index": "not_analyzed"
         }
       }
     }
