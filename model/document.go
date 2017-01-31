@@ -19,12 +19,12 @@ type Dataset struct {
 type Metadata struct {
 	Description        string         `json:"description,omitempty"`
 	Taxonomies         []string       `json:"taxonomies,omitempty"`
-	Contact            *Contact       `json:"contact"`
+	Contact            *Contact       `json:"contact,omitempty"`
 	ReleaseDate        string         `json:"releaseDate"`
-	NextRelease        string         `json:"nextReleaseDate"`
-	NationalStatistics bool           `json:"nationalStatistics"`
-	Publications       []string       `json:"associatedPublications"`
-	Methodology        []*Methodology `json:"methodology"`
+	NextRelease        string         `json:"nextReleaseDate,omitempty"`
+	NationalStatistics bool           `json:"nationalStatistics,omitempty"`
+	Publications       []string       `json:"associatedPublications,omitempty"`
+	Methodology        []*Methodology `json:"methodology,omitempty"`
 	TermsAndConditions string         `json:"termsAndConditions,omitempty"`
 }
 
