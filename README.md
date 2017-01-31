@@ -22,6 +22,11 @@ cd dp-compose
 ./run.sh
 ```
 
+##### Load the template into ElasticSearch
+```
+curl -XPUT localhost:9200/_template/base -d @template.json
+```
+
 ##### Run the search indexer
 ```
 make debug
