@@ -90,7 +90,7 @@ func Test(t *testing.T) {
 				So(recorder.Code, ShouldEqual, http.StatusOK)
 				actualDocument := mockSearchClient.IndexRequests[0].Document
 				So(actualDocument.ID, ShouldEqual, expectedDocument.ID)
-				So(actualDocument.Title, ShouldEqual, expectedDocument.Title)
+				So(actualDocument.Type, ShouldEqual, expectedDocument.Type)
 			})
 		})
 	})
