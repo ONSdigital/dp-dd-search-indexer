@@ -22,26 +22,37 @@ cd dp-compose
 ./run.sh
 ```
 
-##### Run the search indexer
- ```
- make debug
- ```
-
-##### Send a search index actualRequest via Kafka (assumes Kafka is installed)
+##### Load the template into ElasticSearch
 ```
-kafka-console-producer --broker-list localhost:9092 --topic search-index-actualRequest
-{"type":"testtype","id":"123","data":{"some key":"some value"}}
+curl -XPUT localhost:9200/_template/base -d @template.json
+```
+
+##### Run the search indexer
+```
+make debug
+```
+
+##### Send a search index via HTTP
+```
+curl -X POST -d '{"type":"testtype","id":"666"}' localhost:20050/index
+```
+
+##### Send a search index request via Kafka (assumes Kafka is installed)
+```
+kafka-console-producer --broker-list localhost:9092 --topic search-index-request
+{"type":"testtype","id":"234"}
 ```
 
 ### Configuration
 
-| Environment variable | Default                                        | Description
-| -------------------- | ---------------------------------------------- | ----------------------------------------------------
-| KAFKA_ADDR           | http://localhost:9092                          | The Kafka broker addresses comma separated
-| KAFKA_CONSUMER_GROUP | search-index-actualRequest                           | The Kafka consumer group to consume messages from
-| FILE_COMPLETE_TOPIC  | search-index-actualRequest                           | The Kafka topic to consume messages from
-| ELASTIC_SEARCH_NODES | http://127.0.0.1:9200                          | The Elastic Search node addresses comma separated
-| ELASTIC_SEARCH_INDEX | ons                                            | The Elastic Search index to update
+| Environment variable | Default                       | Description
+| -------------------- | ----------------------------- | ----------------------------------------------------
+| BIND_ADDR            | :20050                        | The port to serve HTTP requests on
+| KAFKA_ADDR           | http://localhost:9092         | The Kafka broker addresses comma separated
+| KAFKA_CONSUMER_GROUP | search-index-actualRequest    | The Kafka consumer group to consume messages from
+| FILE_COMPLETE_TOPIC  | search-index-actualRequest    | The Kafka topic to consume messages from
+| ELASTIC_SEARCH_NODES | http://127.0.0.1:9200         | The Elastic Search node addresses comma separated
+| ELASTIC_SEARCH_INDEX | ons                           | The Elastic Search index to update
 
 ### Contributing
 
