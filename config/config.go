@@ -30,7 +30,7 @@ func Load() {
 	KafkaBrokers = strings.Split(getEnvironmentVariable("KAFKA_ADDR", "localhost:9092"), ",")
 	KafkaConsumerTopic = getEnvironmentVariable("KAFKA_CONSUMER_TOPIC", "search-index-request")
 	KafkaConsumerGroup = getEnvironmentVariable("KAFKA_CONSUMER_GROUP", "search-index-request")
-	ElasticSearchNodes = strings.Split(getEnvironmentVariable("ELASTIC_SEARCH_NODES", "http://127.0.0.1:9200"), ",")
+	ElasticSearchNodes = strings.Split(getEnvironmentVariable("ELASTIC_SEARCH_NODES", "http://localhost:9200"), ",")
 	ElasticSearchIndex = getEnvironmentVariable("ELASTIC_SEARCH_INDEX", "dd")
 
 	log.Debug("Loaded configuration values:", log.Data{
