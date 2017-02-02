@@ -33,17 +33,18 @@ func main() {
 
 	bootstrap(searchClient)
 
-	log.Debug("Creating Kafka consumer.", nil)
-	consumerConfig := cluster.NewConfig()
-	kafkaConsumer, err := cluster.NewConsumer(config.KafkaBrokers, config.KafkaConsumerTopic, []string{config.KafkaConsumerTopic}, consumerConfig)
-	if err != nil {
-		log.Error(err, log.Data{"message": "An error occured creating the Kafka consumer"})
-		os.Exit(1)
-	}
+	//log.Debug("Creating Kafka consumer.", nil)
+	//consumerConfig := cluster.NewConfig()
+	//kafkaConsumer, err := cluster.NewConsumer(config.KafkaBrokers, config.KafkaConsumerTopic, []string{config.KafkaConsumerTopic}, consumerConfig)
+	//if err != nil {
+	//	log.Error(err, log.Data{"message": "An error occured creating the Kafka consumer"})
+	//	os.Exit(1)
+	//}
+	var kafkaConsumer *cluster.Consumer
 
 	exitCh := make(chan struct{})
 
-	listenForKafkaMessages(kafkaConsumer, searchClient, exitCh)
+	//listenForKafkaMessages(kafkaConsumer, searchClient, exitCh)
 	listenForHTTPRequests(exitCh)
 	waitForInterrupt(kafkaConsumer, searchClient, exitCh)
 }
@@ -277,10 +278,10 @@ func waitForInterrupt(kafkaConsumer io.Closer, searchClient search.IndexingClien
 
 func shutdown(kafkaConsumer io.Closer, searchClient search.IndexingClient) {
 	log.Debug("Shutting down.", nil)
-	err := kafkaConsumer.Close()
-	if err != nil {
-		log.Error(err, log.Data{"message": "An error occured closing the Kafka consumer"})
-	}
+	//err := kafkaConsumer.Close()
+	//if err != nil {
+	//	log.Error(err, log.Data{"message": "An error occured closing the Kafka consumer"})
+	//}
 	searchClient.Stop()
 	log.Debug("Service stopped", nil)
 }
