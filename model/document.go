@@ -20,7 +20,7 @@ type Metadata struct {
 	Taxonomies         []string       `json:"taxonomies,omitempty"`
 	Contact            *Contact       `json:"contact,omitempty"`
 	ReleaseDate        string         `json:"release_date"`
-	NextRelease        string         `json:"next_releaseDate,omitempty"`
+	NextRelease        string         `json:"next_release_date,omitempty"`
 	NationalStatistics bool           `json:"is_national_statistic,omitempty"`
 	Publications       []string       `json:"associated_publications,omitempty"`
 	Methodology        []*Methodology `json:"methodology,omitempty"`
