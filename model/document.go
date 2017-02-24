@@ -8,11 +8,11 @@ type Document struct {
 }
 
 type Dataset struct {
-	ID          string       `json:"id"`
-	Title       string       `json:"title"`
-	URL         string       `json:"url,omitempty"`
-	Metadata    *Metadata    `json:"metadata,omitempty"`
-	Dimensions  []*Dimension `json:"dimensions,omitempty"`
+	ID         string       `json:"id"`
+	Title      string       `json:"title"`
+	URL        string       `json:"url,omitempty"`
+	Metadata   *Metadata    `json:"metadata,omitempty"`
+	Dimensions []*Dimension `json:"dimensions,omitempty"`
 }
 
 type Metadata struct {

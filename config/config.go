@@ -27,7 +27,7 @@ var ElasticSearchIndex string
 // Load any defined environment variables into the configuration.
 func Load() {
 	BindAddr = getEnvironmentVariable("BIND_ADDR", ":20050")
-	KafkaBrokers = strings.Split(getEnvironmentVariable("KAFKA_ADDR", "localhost:9092"), ",")
+	KafkaBrokers = strings.Split(getEnvironmentVariable("KAFKA_ADDR", ""), ",") // localhost:9092
 	KafkaConsumerTopic = getEnvironmentVariable("KAFKA_CONSUMER_TOPIC", "search-index-request")
 	KafkaConsumerGroup = getEnvironmentVariable("KAFKA_CONSUMER_GROUP", "search-index-request")
 	ElasticSearchNodes = strings.Split(getEnvironmentVariable("ELASTIC_SEARCH_NODES", "http://localhost:9200"), ",")
