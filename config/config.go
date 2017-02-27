@@ -24,6 +24,9 @@ var ElasticSearchNodes []string
 // ElasticSearchIndex - the Elastic Search index name to write to.
 var ElasticSearchIndex string
 
+// ElasticSearchAreaIndex - the Elastic Search area index name to write to.
+var ElasticSearchAreaIndex string
+
 // Load any defined environment variables into the configuration.
 func Load() {
 	BindAddr = getEnvironmentVariable("BIND_ADDR", ":20050")
@@ -32,14 +35,16 @@ func Load() {
 	KafkaConsumerGroup = getEnvironmentVariable("KAFKA_CONSUMER_GROUP", "search-index-request")
 	ElasticSearchNodes = strings.Split(getEnvironmentVariable("ELASTIC_SEARCH_NODES", "http://localhost:9200"), ",")
 	ElasticSearchIndex = getEnvironmentVariable("ELASTIC_SEARCH_INDEX", "dd")
+	ElasticSearchAreaIndex = getEnvironmentVariable("ELASTIC_SEARCH_AREA_INDEX", "areas")
 
 	log.Debug("Loaded configuration values:", log.Data{
-		"BIND_ADDR":            BindAddr,
-		"KAFKA_ADDR":           KafkaBrokers,
-		"KAFKA_CONSUMER_TOPIC": KafkaConsumerTopic,
-		"KAFKA_CONSUMER_GROUP": KafkaConsumerGroup,
-		"ELASTIC_SEARCH_NODES": ElasticSearchNodes,
-		"ELASTIC_SEARCH_INDEX": ElasticSearchIndex,
+		"BIND_ADDR":                 BindAddr,
+		"KAFKA_ADDR":                KafkaBrokers,
+		"KAFKA_CONSUMER_TOPIC":      KafkaConsumerTopic,
+		"KAFKA_CONSUMER_GROUP":      KafkaConsumerGroup,
+		"ELASTIC_SEARCH_NODES":      ElasticSearchNodes,
+		"ELASTIC_SEARCH_INDEX":      ElasticSearchIndex,
+		"ELASTIC_SEARCH_AREA_INDEX": ElasticSearchAreaIndex,
 	})
 }
 
