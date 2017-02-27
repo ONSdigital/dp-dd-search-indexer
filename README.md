@@ -48,9 +48,6 @@ kafka-console-producer --broker-list localhost:9092 --topic search-index-request
 | Environment variable | Default                       | Description
 | -------------------- | ----------------------------- | ----------------------------------------------------
 | BIND_ADDR            | :20050                        | The port to serve HTTP requests on
-| KAFKA_ADDR           |                               | The Kafka broker addresses comma separated. By default the kafka listener is disabled unless this value is provided.
-| KAFKA_CONSUMER_GROUP | search-index-actualRequest    | The Kafka consumer group to consume messages from
-| FILE_COMPLETE_TOPIC  | search-index-actualRequest    | The Kafka topic to consume messages from
 | ELASTIC_SEARCH_NODES | http://127.0.0.1:9200         | The Elastic Search node addresses comma separated
 | ELASTIC_SEARCH_INDEX | ons                           | The Elastic Search index to update
 
