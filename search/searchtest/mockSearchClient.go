@@ -25,7 +25,7 @@ type IndexRequest struct {
 }
 
 // Index does not index anything, but captures the request for assertions in tests.
-func (elasticSearch *MockSearchClient) Index(document *model.Document) error {
+func (elasticSearch *MockSearchClient) Index(document *model.Document, indexName string) error {
 
 	if elasticSearch.CustomIndexFunc != nil {
 		return elasticSearch.CustomIndexFunc(document)
