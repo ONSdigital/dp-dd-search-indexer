@@ -34,7 +34,12 @@ make debug
 
 ##### Send a search index via HTTP
 ```
-curl -X POST -d '{"type":"testtype","id":"666"}' localhost:20050/index
+curl -X POST -d '{"type":"dataset","id":"666"}' localhost:20050/index
+```
+
+##### Send an area search index via HTTP
+```
+curl -X POST -d '{"id":"JdqPL8h0w8QqciugIvCTomSUpNE=","type":"area","body":{"title":"Cardiff","type":"Unitary Authority"}}' localhost:20050/index-area
 ```
 
 ##### Send a search index request via Kafka (assumes Kafka is installed and the KAFKA_ADDR environment variable has been set.)
