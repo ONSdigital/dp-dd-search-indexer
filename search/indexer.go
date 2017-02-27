@@ -7,7 +7,7 @@ import (
 )
 
 // ProcessIndexRequest takes a []byte which contains the raw JSON document and indexes it in search.
-func ProcessIndexRequest(msg []byte, searchClient IndexingClient) {
+func ProcessIndexRequest(msg []byte, searchClient IndexingClient, indexName string) {
 
 	var document *model.Document
 	err := json.Unmarshal(msg, &document)
@@ -20,7 +20,7 @@ func ProcessIndexRequest(msg []byte, searchClient IndexingClient) {
 		"Document": document,
 	})
 
-	err = searchClient.Index(document)
+	err = searchClient.Index(document, indexName)
 	if err != nil {
 		log.Error(err, nil)
 	}

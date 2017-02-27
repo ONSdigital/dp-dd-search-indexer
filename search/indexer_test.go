@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) {
+func TestProcessIndexRequet(t *testing.T) {
 
 	Convey("Given a new index request", t, func() {
 		expectedRequest := model.Document{
@@ -20,7 +20,7 @@ func Test(t *testing.T) {
 		searchClient := searchtest.NewMockSearchClient()
 
 		Convey("When the index request is processed", func() {
-			search.ProcessIndexRequest(documentJson, searchClient)
+			search.ProcessIndexRequest(documentJson, searchClient, "indexName")
 
 			Convey("Then the search client is called with the expected parameters", func() {
 				var actualRequest searchtest.IndexRequest = searchClient.IndexRequests[0]

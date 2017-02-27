@@ -1,5 +1,4 @@
 build:
-	govendor generate
 	go build -o build/dp-dd-search-indexer
 
 debug: build

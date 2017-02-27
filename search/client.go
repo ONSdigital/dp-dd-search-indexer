@@ -10,20 +10,19 @@ var _ IndexingClient = (*elasticSearchClient)(nil)
 
 // IndexingClient - interface for the indexing functions of a search client.
 type IndexingClient interface {
-	Index(document *model.Document) error
+	Index(document *model.Document, indexName string) error
 	Stop()
 }
 
 // elasticSearchClient - Elastic Search specific implementation of IndexingClient
 type elasticSearchClient struct {
 	client *elastic.Client
-	index  string
 }
 
 // Index the given document.
-func (elasticSearch *elasticSearchClient) Index(document *model.Document) error {
+func (elasticSearch *elasticSearchClient) Index(document *model.Document, indexName string) error {
 	_, err := elasticSearch.client.Index().
-		Index(elasticSearch.index).
+		Index(indexName).
 		Type(document.Type).
 		Id(document.ID).
 		BodyJson(document).
@@ -39,7 +38,7 @@ func (elasticSearch *elasticSearchClient) Stop() {
 }
 
 // NewClient create a new instance of elasticSearchClient.
-func NewClient(nodes []string, index string) (IndexingClient, error) {
+func NewClient(nodes []string) (IndexingClient, error) {
 	client, err := elastic.NewClient(
 		elastic.SetURL(nodes...),
 		elastic.SetMaxRetries(5))
@@ -47,5 +46,5 @@ func NewClient(nodes []string, index string) (IndexingClient, error) {
 		return nil, err
 	}
 
-	return &elasticSearchClient{client, index}, nil
+	return &elasticSearchClient{client}, nil
 }

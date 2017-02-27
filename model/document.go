@@ -7,25 +7,29 @@ type Document struct {
 	Body interface{} `json:"body"`
 }
 
+type Area struct {
+	Title string `json:"title"` // labels.label[1]
+	Type  string `json:"type"`  // areaType.codename
+}
+
 type Dataset struct {
-	ID          string       `json:"id"`
-	Title       string       `json:"title"`
-	Description string       `json:"description"`
-	URL         string       `json:"url,omitempty"`
-	Metadata    *Metadata    `json:"metadata,omitempty"`
-	Dimensions  []*Dimension `json:"dimensions,omitempty"`
+	ID         string       `json:"id"`
+	Title      string       `json:"title"`
+	URL        string       `json:"url,omitempty"`
+	Metadata   *Metadata    `json:"metadata,omitempty"`
+	Dimensions []*Dimension `json:"dimensions,omitempty"`
 }
 
 type Metadata struct {
 	Description        string         `json:"description,omitempty"`
 	Taxonomies         []string       `json:"taxonomies,omitempty"`
 	Contact            *Contact       `json:"contact,omitempty"`
-	ReleaseDate        string         `json:"releaseDate"`
-	NextRelease        string         `json:"nextReleaseDate,omitempty"`
-	NationalStatistics bool           `json:"nationalStatistics,omitempty"`
-	Publications       []string       `json:"associatedPublications,omitempty"`
+	ReleaseDate        string         `json:"release_date"`
+	NextRelease        string         `json:"next_release_date,omitempty"`
+	NationalStatistics bool           `json:"is_national_statistic,omitempty"`
+	Publications       []string       `json:"associated_publications,omitempty"`
 	Methodology        []*Methodology `json:"methodology,omitempty"`
-	TermsAndConditions string         `json:"termsAndConditions,omitempty"`
+	TermsAndConditions string         `json:"terms_and_conditions,omitempty"`
 }
 
 type Contact struct {
@@ -44,7 +48,7 @@ type Dimension struct {
 	Name           string             `json:"name"` // Sex
 	Type           string             `json:"type"` // Dimension type
 	Options        []*DimensionOption `json:"options,omitempty"`
-	SelectedOption *DimensionOption   `json:"selectedOption,omitempty"`
+	SelectedOption *DimensionOption   `json:"selected_option,omitempty"`
 }
 
 type DimensionOption struct {
