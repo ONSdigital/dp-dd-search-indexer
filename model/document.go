@@ -8,13 +8,8 @@ type Document struct {
 }
 
 type Area struct {
-	ID          string `json:"id"`    // itemCode
-	Title       string `json:"title"` // labels.label[1]
-	Type        string `json:"type"`  // areaType.codename
-	Level       int    `json:"level"`
-	GeographyId string `json:"geography_id"`
-	Geography   string `json:"geography"`
-	// parent geography? / geographies?
+	Title string `json:"title"` // labels.label[1]
+	Type  string `json:"type"`  // areaType.codename
 }
 
 type Dataset struct {
