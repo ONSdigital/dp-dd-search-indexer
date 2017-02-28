@@ -53,6 +53,18 @@
                   "format": "strict_date_optional_time||epoch_millis"
                 }
               }
+            },
+            "title": {
+              "type": "string",
+              "store": true,
+              "term_vector": "with_positions_offsets",
+              "analyzer": "snowball",
+              "fields": {
+                "raw": {
+                  "index": "not_analyzed",
+                  "type": "string"
+                }
+              }
             }
           }
         },
@@ -92,7 +104,13 @@
               "type": "string",
               "store": true,
               "term_vector": "with_positions_offsets",
-              "analyzer": "snowball"
+              "analyzer": "snowball",
+              "fields": {
+                "raw": {
+                  "index": "not_analyzed",
+                  "type": "string"
+                }
+              }
             },
             "type": {
               "type": "string",
