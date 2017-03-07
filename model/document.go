@@ -13,11 +13,24 @@ type Area struct {
 }
 
 type Dataset struct {
-	ID         string       `json:"id"`
-	Title      string       `json:"title"`
-	URL        string       `json:"url,omitempty"`
-	Metadata   *Metadata    `json:"metadata,omitempty"`
-	Dimensions []*Dimension `json:"dimensions,omitempty"`
+	ID                  string                        `json:"id"`
+	Title               string                        `json:"title"`
+	URL                 string                        `json:"url,omitempty"`
+	Metadata            *Metadata                     `json:"metadata,omitempty"`
+	Dimensions          []*Dimension                  `json:"dimensions,omitempty"`
+	GeographicHierarchy []*GeographicHierarchySummary `json:"geographic_hierarchy,omitempty"`
+}
+
+type GeographicHierarchySummary struct {
+	ID        string      `json:"id"`
+	Title     string      `json:"title"`
+	AreaTypes []*AreaType `json:"area_types"`
+}
+
+type AreaType struct {
+	ID    string `json:"id"`
+	Title string `json:"title"`
+	Level int    `json:"level"`
 }
 
 type Metadata struct {

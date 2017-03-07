@@ -39,6 +39,43 @@
                 }
               }
             },
+            "geographic_hierarchy": {
+              "type": "nested",
+              "properties": {
+                "area_types": {
+                  "type": "nested",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "store": true,
+                      "term_vector": "with_positions_offsets",
+                      "analyzer": "snowball"
+                    },
+                    "level": {
+                      "type": "long"
+                    },
+                    "title": {
+                      "type": "string",
+                      "store": true,
+                      "term_vector": "with_positions_offsets",
+                      "analyzer": "snowball"
+                    }
+                  }
+                },
+                "id": {
+                  "type": "string",
+                  "store": true,
+                  "term_vector": "with_positions_offsets",
+                  "analyzer": "snowball"
+                },
+                "title": {
+                  "type": "string",
+                  "store": true,
+                  "term_vector": "with_positions_offsets",
+                  "analyzer": "snowball"
+                }
+              }
+            },
             "id": {
               "type": "string",
               "index": "not_analyzed"
@@ -87,10 +124,6 @@
               "store": true,
               "term_vector": "with_positions_offsets",
               "analyzer": "snowball"
-            },
-            "geography_id": {
-              "type": "string",
-              "index": "not_analyzed"
             },
             "id": {
               "type": "string",
