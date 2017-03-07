@@ -119,20 +119,6 @@
       "properties": {
         "body": {
           "properties": {
-            "geography": {
-              "type": "string",
-              "store": true,
-              "term_vector": "with_positions_offsets",
-              "analyzer": "snowball"
-            },
-            "id": {
-              "type": "string",
-              "index": "not_analyzed"
-            },
-            "level": {
-              "type": "long",
-              "index": "not_analyzed"
-            },
             "title": {
               "type": "string",
               "store": true,
