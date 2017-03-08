@@ -8,8 +8,9 @@ type Document struct {
 }
 
 type Area struct {
-	Title string `json:"title"` // labels.label[1]
-	Type  string `json:"type"`  // areaType.codename
+	Title  string `json:"title"`   // labels.label[1]
+	Type   string `json:"type"`    // areaType.codename
+	TypeId string `json:"type_id"` // areaType.codename
 }
 
 type Dataset struct {
